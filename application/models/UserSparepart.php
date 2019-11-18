@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class UserSparepart extends CI_Model
 {
-    private $table = 'sparepart';
+    private $table = 'spareparts';
     public $id;
     public $name;
     public $merk;
@@ -12,10 +12,20 @@ class UserSparepart extends CI_Model
     public $rule = 
     [
         [
-            'field' => 'name',
-            'label' => 'name',
-            'rules' => 'required'
+            'field'=>'name',
+            'label'=>'name',
+            'rules'=>'required|alpha'
         ],
+        [
+            'field'=>'merk',
+            'label'=>'merk',
+            'rules'=>'required'
+        ],
+        [
+            'field'=>'jumlah',
+            'label'=>'jumlah',
+            'rules'=>'required|numeric'
+        ]
     ];
     
     public function Rules()
@@ -30,7 +40,6 @@ class UserSparepart extends CI_Model
     
     public function store($request)
     {
-        $this->id = $request->id;
         $this->name = $request->name;
         $this->merk = $request->merk; 
         $this->jumlah = $request->jumlah; 
@@ -43,7 +52,7 @@ class UserSparepart extends CI_Model
     
     public function update($request,$id)
     {
-        $updateData = ['name' => $request->name, 'merk' => $request->merk,'jumlah' => $request->jumlah,'created_at' => $request->created_at];
+        $updateData = ['name' => $request->name, 'merk' => $request->merk,'jumlah' => $request->jumlah];
         if($this->db->where('id',$id)->update($this->table, $updateData))
         {
             return['msg'=>'Berhasil','error'=>false];

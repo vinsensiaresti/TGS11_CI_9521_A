@@ -15,7 +15,7 @@ Class Sparepart extends REST_Controller{
     
     public function index_get()
     {
-        return $this->returnData($this->db->get('sparepart')->result(),false);
+        return $this->returnData($this->db->get('spareparts')->result(),false);
     }
     
     public function index_post($id=null)
@@ -23,55 +23,41 @@ Class Sparepart extends REST_Controller{
         $validation=$this->form_validation;
         $rule=$this->UserSparepart->rules();
         if($id==null){
-            array_push($rule,[
-                'field'=>'id',
-                'label'=>'id',
-                'rules'=>'id'
-            ],
+            array_push($rule,
             [
                 'field'=>'name',
                 'label'=>'name',
-                'rules'=>'required'
+                'rules'=>'required|alpha'
             ],
             [
                 'field'=>'merk',
                 'label'=>'merk',
-                'rules'=>'merk'
+                'rules'=>'required'
             ],
             [
                 'field'=>'jumlah',
                 'label'=>'jumlah',
                 'rules'=>'required|numeric'
-            ],
-            [
-                'field'=>'created_at',
-                'label'=>'created_at',
-                'rules'=>'required'
             ]
-
         );
         }else
         {
             array_push($rule,
             [
+                'field'=>'name',
+                'label'=>'name',
+                'rules'=>'required|alpha'
+            ],
+            [
                 'field'=>'merk',
                 'label'=>'merk',
                 'rules'=>'required'
-
             ],
             [
                 'field'=>'jumlah',
                 'label'=>'jumlah',
                 'rules'=>'required|numeric'
-                
-            ],
-            [
-                'field'=>'created_at',
-                'label'=>'created_at',
-                'rules'=>'required'
-
             ]
-
             );
         }
         $validation->set_rules($rule);
@@ -79,14 +65,13 @@ Class Sparepart extends REST_Controller{
         {
             return $this->returnData($this->form_validation->error_array(),true);
         }
-        $sparepart = new UserData();
-        $sparepart->id = $this->post('id');
+        $sparepart = new SparepartData();
         $sparepart->name = $this->post('name');
         $sparepart->merk = $this->post('merk');
         $sparepart->jumlah = $this->post('jumlah');
 
         date_default_timezone_set('Asia/Jakarta');
-        $now = date ('Y/m/d H:i:s');
+        $now = date ('Y-m-d H:i:s');
         $sparepart->created_at = $now;
         if($id==null)
         {
@@ -115,8 +100,7 @@ Class Sparepart extends REST_Controller{
 
 }
 
-Class UserData{
-    public $id; 
+Class SparepartData{ 
     public $name; 
     public $merk;
     public $jumlah;
